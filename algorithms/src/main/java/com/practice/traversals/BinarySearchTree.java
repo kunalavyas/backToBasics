@@ -96,14 +96,36 @@ public class BinarySearchTree {
         return returnValue;
     }
 
-    public void depthFirstPreorder() {
-
+    public List<Integer> depthFirstPreorder() {
+        List<Integer> returnValue = new ArrayList<>();
+        return traversePreorder(this.root, returnValue);
+    }
+    public List<Integer> traversePreorder(Node currentNode, List<Integer> returnValue) {
+        returnValue.add(currentNode.value);
+        if (currentNode.left != null) {
+            traversePreorder(currentNode.left, returnValue);
+        }
+        if (currentNode.right != null) {
+            traversePreorder(currentNode.right, returnValue);
+        }
+        return returnValue;
     }
 
-    public void depthFirstPostorder() {
-
+    public List<Integer> depthFirstPostorder() {
+        List<Integer> returnValue = new ArrayList<>();
+        return traversePostorder(this.root, returnValue);
     }
+    public List<Integer> traversePostorder(Node currentNode, List<Integer> returnValue) {
 
+        if (currentNode.left != null) {
+            traversePostorder(currentNode.left, returnValue);
+        }
+        if (currentNode.right != null) {
+            traversePostorder(currentNode.right, returnValue);
+        }
+        returnValue.add(currentNode.value);
+        return returnValue;
+    }
     public static void main(String[] args) {
         BinarySearchTree bst = new BinarySearchTree();
         bst.insert(9);
@@ -116,6 +138,8 @@ public class BinarySearchTree {
 
         System.out.println("bfs: " + bst.breadthFirstSearch());
         System.out.println("dfs: " + bst.depthFirstInorder());
+        System.out.println("dfs preorder: " + bst.depthFirstPreorder());
+        System.out.println("dfs postorder: " + bst.depthFirstPostorder());
     }
 
 }
