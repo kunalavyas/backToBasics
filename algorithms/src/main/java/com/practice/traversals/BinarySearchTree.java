@@ -1,12 +1,16 @@
 package com.practice.traversals;
 
-import java.util.ArrayList;
+import java.sql.SQLOutput;
+import java.util.*;
 
 public class BinarySearchTree {
     Node root;
-
+    int treeSize;
+    Map<Integer,Boolean> isVisited= new HashMap<>();
     public void insert(int value){
         Node node=new Node(value);
+        treeSize++;
+        isVisited.put(node.hashCode(),false);
         if(root==null){
             this.root=node;
         }
@@ -54,6 +58,52 @@ public class BinarySearchTree {
         return resultArray;
     }
 
+    public ArrayList<Integer> depthFirstSearchPostOrder(){
+        Node currentNode= this.root;
+        Stack<Node> stack = new Stack<>();
+        ArrayList<Integer> resultArray= new ArrayList<>();
+        stack.push(currentNode);
+        while(!stack.empty()){
+            currentNode=stack.peek();
+            if(currentNode.left!=null && !isVisited.get(currentNode.left.hashCode())){
+                stack.push(currentNode.left);
+                currentNode=currentNode.left;
+                continue;
+            }
+            if(currentNode.right!=null &&  !isVisited.get(currentNode.right.hashCode())){
+                stack.push(currentNode.right);
+                currentNode=currentNode.right;
+                continue;
+            }
+
+            isVisited.put(currentNode.hashCode(),true);
+            resultArray.add(currentNode.value);
+            stack.pop();
+        }
+        return resultArray;
+    }
+    public List<Integer> depthFirstInorder(){
+        List<Integer> returnValue= new ArrayList<>();
+        return traverseInorder(this.root,returnValue);
+    }
+    public List<Integer> traverseInorder(Node currentNode,List<Integer> returnValue){
+        if(currentNode.left!=null)
+        {
+            traverseInorder(currentNode.left,returnValue);
+        }
+        returnValue.add(currentNode.value);
+        if(currentNode.right!=null)
+        {
+            traverseInorder(currentNode.right,returnValue);
+        }
+        return returnValue;
+    }
+    public void depthFirstPreorder(){
+
+    }
+    public void depthFirstPostorder(){
+
+    }
     public static void main(String[] args) {
         BinarySearchTree bst= new BinarySearchTree();
         bst.insert(9);
@@ -65,6 +115,7 @@ public class BinarySearchTree {
         bst.insert(1);
 
         System.out.println("bfs: " + bst.breadthFirstSearch());
+        System.out.println("dfs: " + bst.depthFirstInorder());
     }
 
 }
